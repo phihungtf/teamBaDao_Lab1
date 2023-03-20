@@ -1,7 +1,9 @@
-pandoc docs/report.md \
+pandoc -H docs/disable_float.tex \
+docs/report.md \
 -o docs/report.pdf \
 --from markdown+yaml_metadata_block+raw_html \
 --template templates/eisvogel.latex \
+--pdf-engine=xelatex \
 --table-of-contents \
 --toc-depth 6 \
 --number-sections \

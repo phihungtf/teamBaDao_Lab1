@@ -20,7 +20,7 @@ code-block-font-size: \scriptsize
 
 Here are the steps to set up a single-node Hadoop cluster:
 
-### Install Java:
+### Install Java
 
 Hadoop is built in Java, so we need to have Java installed on our machine. According to the [Hadoop documentation](https://cwiki.apache.org/confluence/display/HADOOP/Hadoop+Java+Versions), Hadoop requires Java 8 or Java 11.
 
@@ -40,7 +40,7 @@ java -version
 
 ![Java version](images/java-version.png)
 
-### Install `ssh`:
+### Install `ssh`
 
 Hadoop uses `ssh` to communicate between nodes in the cluster. To install `ssh`, open a terminal and run the following command:
 
@@ -50,7 +50,7 @@ sudo apt-get install ssh
 
 ![Install ssh](images/install-ssh.jpg)
 
-To verify that ssh is installed, run the following command:
+To verify that `ssh` is installed, run the following command:
 
 ```bash
 ssh -V
@@ -58,7 +58,7 @@ ssh -V
 
 ![ssh version](images/ssh-version.png)
 
-### Download and install Hadoop:
+### Download and install Hadoop
 
 Next, we need to download and install Hadoop. To download Hadoop, open a terminal and run the following command:
 
@@ -76,7 +76,7 @@ tar -xvzf hadoop-3.3.4.tar.gz
 
 ![Extract Hadoop](images/extract-hadoop.jpg)
 
-### Configure Environment Variables:
+### Configure Environment Variables
 
 First, find the location of our Java installation by running the following command:
 
@@ -137,7 +137,7 @@ export HADOOP_HOME=~/hadoop-3.3.4
 
 Save and close the file by pressing `Ctrl+X`, then `Y`, then `Enter`.
 
-### Configure the pseudo-distributed mode (Single Node mode):
+### Configure the pseudo-distributed mode (Single Node mode)
 
 In the pseudo-distributed mode, Hadoop runs on a single machine, but it is configured to act as if it is running on a cluster. This mode is useful for testing and development purposes.
 
@@ -195,7 +195,7 @@ Edit the `yarn-site.xml` file (by running the command `nano $HADOOP_HOME/etc/had
 
 ![Edit yarn-site.xml](images/edit-yarn-site.png)
 
-### Setup passphraseless ssh:
+### Setup passphraseless ssh
 
 Now check that we can `ssh` to the `localhost` without a passphrase:
 
@@ -213,7 +213,7 @@ sudo service ssh start
 
 Now we are able to `ssh` to the `localhost` but we are prompted for a password.
 
-![password needed](images/password-needed.png)
+![Password needed to ssh](images/password-needed.png)
 
 To avoid this, we need to setup passphraseless ssh.
 
@@ -231,7 +231,7 @@ Now we can `ssh` to the `localhost` without a password.
 
 ![ssh localhost](images/ssh-localhost.png)
 
-### Start Hadoop:
+### Start Hadoop
 
 Before we start Hadoop, we need to format the HDFS file system. To do this, run the following command:
 
@@ -278,19 +278,19 @@ To prove that each member of our group is successfully installed Hadoop, here ar
 
 - 20120489: Võ Phi Hùng
 
-![jps](images/20120489-jps.png)
+![20120489: Võ Phi Hùng](images/20120489-jps.png)
 
 - 20120474: Lê Kim Hiếu
 
-![TODO: add a screenshot](images/20120474-jps.png)
+![20120474: Lê Kim Hiếu](images/20120474-jps.png)
 
 - 20120632: Trần Thái Vỹ
 
-![TODO: add a screenshot](images/20120632-jps.png)
+![20120632: Trần Thái Vỹ](images/20120632-jps.png)
 
 - 20120573: Nguyễn Phú Tân
 
-![TODO: add a screenshot](images/20120573-jps.png)
+![20120573: Nguyễn Phú Tân](images/20120573-jps.png)
 
 ## Introduction to MapReduce
 
@@ -303,8 +303,6 @@ To prove that each member of our group is successfully installed Hadoop, here ar
 4. The combiner function is introduced to address the problem of excessive network traffic during the shuffle and sort phase. The combiner function is a mini-reduce function that performs a partial reduction of the intermediate key-value pairs on each map node before they are transferred to the reduce node. This reduces the amount of data transferred over the network and improves the overall performance of the MapReduce job.
 
 ## Running a warm-up problem: Word Count
-
-<!-- Short introduce -->
 
 In this section, we will run a warm-up problem: Word Count. This problem is a classic example of a MapReduce job. The goal of this problem is to count the number of occurrences of each word in a given text file.
 
@@ -601,15 +599,17 @@ Here is result that we have done in this lab:
   - https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
 - MapReduce Tutorial: WordCount Example.
   - https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
+- MapReduce: Simplified Data Processing on Large Clusters
+  - https://www.usenix.org/events/osdi04/tech/full_papers/dean/dean.pdf
 - A Replication-Based Mechanism for Fault Tolerance in MapReduce Framework.
   - https://www.hindawi.com/journals/mpe/2015/408921/
 - All of StackOverflow link related.
 
 <!-- References with citing, this will be display as footnotes -->
 
-[^1]: [Hadoop Installation on Windows 10 using WSL
+[^1]:
+    [Hadoop Installation on Windows 10 using WSL
     ](https://dev.to/samujjwaal/hadoop-installation-on-windows-10-using-wsl-2ck1)
 
 [^2]: [MapReduce Tutorial: Mapper](https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Mapper)
-
 [^3]: [Data locality in Hadoop: The Most Comprehensive Guide](https://data-flair.training/blogs/data-locality-in-hadoop-mapreduce/)
