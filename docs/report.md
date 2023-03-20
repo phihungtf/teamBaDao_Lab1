@@ -1,6 +1,6 @@
 ---
 title: 'Lab 01: A Gentle Introduction to Hadoop'
-author: ['your-team-name']
+author: ['BaDao']
 date: '2023-02-17'
 subtitle: 'CSC14118 Introduction to Big Data 20KHMT1'
 lang: 'en'
@@ -293,6 +293,14 @@ To prove that each member of our group is successfully installed Hadoop, here ar
 ![TODO: add a screenshot](images/20120573-jps.png)
 
 ## Introduction to MapReduce
+
+1. In the MapReduce framework, the input keys-values refer to the data fed to the map function. The map function transforms the input data into intermediate key-value pairs, which are then shuffled and sorted by key. The intermediate keys-values relate to the output of the map function and serve as input to the reduce function. The reduce function processes the intermediate data and produces the final output key-value pairs.
+
+2. MapReduce deals with node failures by replicating data across multiple nodes. If a node fails, the data it contains can be retrieved from other nodes. Additionally, MapReduce periodically checks the status of nodes and reassigns work to healthy nodes if necessary.
+
+3. Locality in MapReduce refers to the concept of processing data where it is stored. In other words, MapReduce tries to minimize data movement across the network by processing data on nodes where the data is stored. This is achieved through data partitioning and data placement techniques such as HDFS block placement.
+
+4. The combiner function is introduced to address the problem of excessive network traffic during the shuffle and sort phase. The combiner function is a mini-reduce function that performs a partial reduction of the intermediate key-value pairs on each map node before they are transferred to the reduce node. This reduces the amount of data transferred over the network and improves the overall performance of the MapReduce job.
 
 ## Running a warm-up problem: Word Count
 

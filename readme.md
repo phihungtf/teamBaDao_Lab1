@@ -9,12 +9,12 @@
     </span>
 </div>
 
-## Collaborators (your-team-name)
+## Collaborators (Bá Đạo)
 
 - `20120489` **Võ Phi Hùng** ([@phihungtf](https://github.com/phihungtf))
-- `20120474` **Lê Kim Hiếu** ([@githubaccount2](https://github.com/githubaccount2))
-- `20120632` **Trần Thái Vỹ** ([@githubaccount3](https://github.com/githubaccount3))
-- `20120573` **Nguyễn Phú Tân** ([@githubaccount4](https://github.com/githubaccount4))
+- `20120474` **Lê Kim Hiếu** ([@kimhieu153255](https://github.com/kimhieu153255))
+- `20120632` **Trần Thái Vỹ** ([@TranThaiVy](https://github.com/TranThaiVy))
+- `20120573` **Nguyễn Phú Tân** ([@NPT-DEV40](https://github.com/NPT-DEV40))
 
 ## Instructors
 
