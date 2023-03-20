@@ -481,23 +481,23 @@ public static class SplitterMapper extends Mapper<Object, Text, Text, IntWritabl
 Reducer:
 
 ```java
-	public static class IntSumReducer extends Reducer<Text, IntWritable, Text, Text> {
-		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-			// Sum up the values of each node
-			int sum = 0;
-			for (IntWritable val : values) {
-				sum += val.get();
-			}
-
-			// Label each node based on the sum
-			if (sum > 0) context.write(key, new Text("pos"));
-			else if (sum < 0) context.write(key, new Text("neg"));
-			else context.write(key, new Text("eq"));
+public static class IntSumReducer extends Reducer<Text, IntWritable, Text, Text> {
+	public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+		// Sum up the values of each node
+		int sum = 0;
+		for (IntWritable val : values) {
+			sum += val.get();
 		}
+
+		// Label each node based on the sum
+		if (sum > 0) context.write(key, new Text("pos"));
+		else if (sum < 0) context.write(key, new Text("neg"));
+		else context.write(key, new Text("eq"));
 	}
+}
 ```
 
-The full source code can be found [here]().
+The full source code can be found [here](https://github.com/phihungtf/teamBaDao_Lab1/blob/main/src/Unhealthy_relationship.java).
 
 Here is the directory structure of the project:
 
