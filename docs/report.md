@@ -32,7 +32,7 @@ sudo apt-get install openjdk-11-jdk
 
 ![Install Java](images/install-java.png)
 
-After installing Java, you can verify that it is installed by running the following command:
+After installing Java, we can verify that it is installed by running the following command:
 
 ```bash
 java -version
@@ -88,7 +88,7 @@ readlink -f $(which java)
 
 In our case, the location of our Java installation is `/usr/lib/jvm/java-11-openjdk-amd64`. This is the value we need to set for the `JAVA_HOME` environment variable.
 
-We also need the `HADOOP_HOME` variable to point to the Hadoop installation directory, which is `~/hadoop-3.3.4`, the `PATH` variable to include the `bin` and `sbin` directories of our Hadoop installation, and other Hadop-related environment variables.
+We also need the `HADOOP_HOME` variable to point to the Hadoop installation directory, which is `~/hadoop-3.3.4`, the `PATH` variable to include the `bin` and `sbin` directories of our Hadoop installation, and other Hadoop-related environment variables.
 
 To set these variables, we need to edit the `.bashrc` file. The `.bashrc` file is a shell script that is executed every time you open a new terminal. We can use this file to set environment variables that will be available in all terminals.
 
@@ -304,37 +304,263 @@ To prove that each member of our group is successfully installed Hadoop, here ar
 
 ## Running a warm-up problem: Word Count
 
-## Bonus
+<!-- Short introduce -->
 
-Insert table example:
+In this section, we will run a warm-up problem: Word Count. This problem is a classic example of a MapReduce job. The goal of this problem is to count the number of occurrences of each word in a given text file.
 
-| Server IP Address | Ports Open                |
-| ----------------- | ------------------------- |
-| 192.168.1.1       | **TCP**: 21,22,25,80,443  |
-| 192.168.1.2       | **TCP**: 22,55,90,8080,80 |
-| 192.168.1.3       | **TCP**: 1433,3389\       |
+First, we need to create an input folder containing the text file we want to process. We will use the example text files from the [Hadoop MapReduce Tutorial](https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0).
 
-**UDP**: 1434,161
+`input/file01`
 
-Code example:
-
-```python
-print("Hello")
+```text
+Hello World Bye World
 ```
+
+`input/file02`
+
+```text
+Hello Hadoop Goodbye Hadoop
+```
+
+Here is the directory structure of the project:
+
+```
+📦src/section3
+ ┣ 📂input
+ ┃ ┣ 📜file01
+ ┃ ┗ 📜file02
+ ┣ 📂output
+ ┗ 📜WordCount.java
+```
+
+Now let's start Hadoop in Single Node Mode:
 
 ```bash
-cat ~/.bashrc
+start-all.sh
 ```
 
-Screenshot example:
+Make the HDFs directories required to execute MapReduce jobs:
 
-![Proof of change your shell prompt's name](images/changeps1.png)
+```bash
+hdfs dfs -mkdir /user
+hdfs dfs -mkdir /user/phihungtf
+hdfs dfs -mkdir /user/phihungtf/wordcount
+hdfs dfs -mkdir /user/phihungtf/wordcount/input
+```
+
+Copy the input files to the HDFS:
+
+```bash
+hdfs dfs -put input/* /user/phihungtf/wordcount/input
+```
+
+![Copy input files to HDFS](images/copy-input-files-to-hdfs.png)
+
+> **_NOTE:_** Before copying the input files to the HDFS, we need to make sure that the input files are in the `input` folder. Also, we might need to change directory to the parent folder of the `input` folder before running the `hdfs dfs -put` command.
+
+Compile the `WordCount.java` file:
+
+```bash
+hadoop com.sun.tools.javac.Main WordCount.java
+```
+
+Create a JAR file:
+
+```bash
+jar cf wc.jar WordCount*.class
+```
+
+Run the MapReduce job:
+
+```bash
+hadoop jar wc.jar WordCount /user/phihungtf/wordcount/input /user/phihungtf/wordcount/output
+```
+
+![Run MapReduce job](images/run-mapreduce-job.png)
+
+![MapReduce job output](images/mapreduce-job-output.png)
+
+Copy the output files from the HDFS to the local file system:
+
+```bash
+hdfs dfs -get /user/phihungtf/wordcount/output/* output
+```
+
+Examine the output files:
+
+```bash
+cat output/*
+```
+
+![Output files](images/output-files.png)
+
+And that's it! We have successfully run a MapReduce job.
+
+## Bonus
+
+### Extended Word Count: Unhealthy relationships
+
+In this section, we will try to solve a more complex problem: Unhealthy relationships. The goal of this problem is to label each node satisfying the following conditions:
+
+- If $Z_a > 0$: node $a$ is labeled as `pos`
+- If $Z_a = 0$: node $a$ is labeled as `eq`
+- If $Z_a < 0$: node $a$ is labeled as `neg`
+
+where $Z_a = |\Delta_a| - |\Gamma_a|$ is the difference between the number of nodes that $a$ relates to and the number of nodes that relate to $a$.
+
+Here is an example of the input file:
+
+```text
+A B
+B C
+A C
+D E
+```
+
+To solve this problem, we easily split the input into two parts: left and right
+
+| Left | Right |
+| ---- | ----- |
+| A    | B     |
+| B    | C     |
+| A    | C     |
+| D    | E     |
+
+Now we can count the number of occurrences of each node in the left and right parts. The result is as follows:
+
+| Node | Left | Right |
+| ---- | ---- | ----- |
+| A    | 2    | 1     |
+| B    | 1    | 1     |
+| C    | 1    | 1     |
+| D    | 0    | 1     |
+| E    | 0    | 1     |
+
+Finally, we can calculate the difference between the number of nodes that $a$ relates to and the number of nodes that relate to $a$.
+
+| Node | Left | Right | Difference |
+| ---- | ---- | ----- | ---------- |
+| A    | 2    | 1     | 1          |
+| B    | 1    | 1     | 0          |
+| C    | 1    | 1     | 0          |
+| D    | 0    | 1     | -1         |
+| E    | 0    | 1     | -1         |
+
+We can see that node $A$ has a positive difference, node $B$ and $C$ have a zero difference, and node $D$ and $E$ have a negative difference. Therefore, node $A$ is labeled as `pos`, node $B$ and $C$ are labeled as `eq`, and node $D$ and $E$ are labeled as `neg`. And the output is as follows:
+
+```text
+A pos
+B eq
+C eq
+D neg
+E neg
+```
+
+**Implementation with MapReduce**
+
+We can implement this problem with MapReduce. The mapper will split the input into two parts: left and right. Then assign the value `1` to each node in the left part and `-1` to each node in the right part. The reducer will sum up the values of each node, and label each node based on the sum.
+
+Mapper:
+
+```java
+public static class SplitterMapper extends Mapper<Object, Text, Text, IntWritable> {
+	private final static IntWritable pos = new IntWritable(1);
+	private final static IntWritable neg = new IntWritable(-1);
+
+	public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+		// Split the input into two parts: left and right
+		String[] tokens = value.toString().split(" ");
+		// Assign the value 1 to each node in the left part
+		context.write(new Text(tokens[0]), pos);
+		// Assign the value -1 to each node in the right part
+		context.write(new Text(tokens[1]), neg);
+	}
+}
+```
+
+Reducer:
+
+```java
+	public static class IntSumReducer extends Reducer<Text, IntWritable, Text, Text> {
+		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+			// Sum up the values of each node
+			int sum = 0;
+			for (IntWritable val : values) {
+				sum += val.get();
+			}
+
+			// Label each node based on the sum
+			if (sum > 0) context.write(key, new Text("pos"));
+			else if (sum < 0) context.write(key, new Text("neg"));
+			else context.write(key, new Text("eq"));
+		}
+	}
+```
+
+The full source code can be found [here]().
+
+Here is the directory structure of the project:
+
+```
+📦src
+ ┣ 📂output
+ ┣ 📜input.txt
+ ┗ 📜Unhealthy_relationship.java
+```
+
+Now let's actually run the MapReduce job.
+
+Create a new directory in the HDFS:
+
+```bash
+hdfs dfs -mkdir /user/phihungtf/ur
+```
+
+Copy the input file from the local file system to the HDFS:
+
+```bash
+hdfs dfs -put input.txt /user/phihungtf/ur
+```
+
+![Copy input file to HDFS](images/copy-input-file-to-hdfs.png)
+
+Compile the `Unhealthy_relationship.java` file:
+
+```bash
+hadoop com.sun.tools.javac.Main Unhealthy_relationship.java
+```
+
+Create a JAR file:
+
+```bash
+jar cf ur.jar Unhealthy_relationship*.class
+```
+
+Run the MapReduce job:
+
+```bash
+hadoop jar ur.jar Unhealthy_relationship /user/phihungtf/ur/input.txt /user/phihungtf/ur/output
+```
+
+![Run MapReduce job](images/run-mapreduce-job-2.png)
+
+![MapReduce job output](images/mapreduce-job-output-2.png)
+
+Copy the output files from the HDFS to the local file system:
+
+```bash
+hdfs dfs -get /user/phihungtf/ur/output/* output
+```
+
+Examine the output files:
+
+```bash
+cat output/*
+```
+
+![Output files](images/output-files-2.png)
 
 \newpage
-
-Screenshot example:
-
-![ImgPlaceholder](images/placeholder-image-300x225.png)
 
 Reference examples:
 
