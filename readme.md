@@ -18,8 +18,8 @@
 
 ## Instructors
 
-- `HCMUS` **Đoàn Đình Toàn** ([@ddtoan](ddtoan18@clc.fitus.edu.vn))
-- `HCMUS` **Nguyễn Ngọc Thảo** ([@nnthao](nnthao@fit.hcmus.edu.vn))
+- `HCMUS` **Đoàn Đình Toàn** ([@ddtoan](mailto:ddtoan18@clc.fitus.edu.vn))
+- `HCMUS` **Nguyễn Ngọc Thảo** ([@nnthao](mailto:nnthao@fit.hcmus.edu.vn))
 
 ---
 
