@@ -90,7 +90,7 @@ In our case, the location of our Java installation is `/usr/lib/jvm/java-11-open
 
 We also need the `HADOOP_HOME` variable to point to the Hadoop installation directory, which is `~/hadoop-3.3.4`, the `PATH` variable to include the `bin` and `sbin` directories of our Hadoop installation, and other Hadoop-related environment variables.
 
-To set these variables, we need to edit the `.bashrc` file. The `.bashrc` file is a shell script that is executed every time you open a new terminal. We can use this file to set environment variables that will be available in all terminals.
+To set these variables, we need to edit the `.bashrc` file. The `.bashrc` file is a shell script that is executed every time we open a new terminal. We can use this file to set environment variables that will be available in all terminals.
 
 Open the `.bashrc` file (by running the command `nano ~/.bashrc`) and add the following line at the end of the file:
 
@@ -203,7 +203,7 @@ Now check that we can `ssh` to the `localhost` without a passphrase:
 ssh localhost
 ```
 
-We encounter the error `ssh: connect to host localhost port 22: Connection refused`, so we run the following commands:
+We encounter the error `ssh: connect to host localhost port 22: Connection refused`, so we run the following commands [^1]:
 
 ```bash
 sudo apt remove openssh-server
@@ -294,11 +294,11 @@ To prove that each member of our group is successfully installed Hadoop, here ar
 
 ## Introduction to MapReduce
 
-1. In the MapReduce framework, the input keys-values refer to the data fed to the map function. The map function transforms the input data into intermediate key-value pairs, which are then shuffled and sorted by key. The intermediate keys-values relate to the output of the map function and serve as input to the reduce function. The reduce function processes the intermediate data and produces the final output key-value pairs.
+1. In the MapReduce framework, the input keys-values refer to the data fed to the map function. The map function transforms the input data into intermediate key-value pairs, which are then shuffled and sorted by key. The intermediate keys-values relate to the output of the map function and serve as input to the reduce function. The reduce function processes the intermediate data and produces the final output key-value pairs.[^2]
 
 2. MapReduce deals with node failures by replicating data across multiple nodes. If a node fails, the data it contains can be retrieved from other nodes. Additionally, MapReduce periodically checks the status of nodes and reassigns work to healthy nodes if necessary.
 
-3. Locality in MapReduce refers to the concept of processing data where it is stored. In other words, MapReduce tries to minimize data movement across the network by processing data on nodes where the data is stored. This is achieved through data partitioning and data placement techniques such as HDFS block placement.
+3. Locality in MapReduce refers to the concept of processing data where it is stored. In other words, MapReduce tries to minimize data movement across the network by processing data on nodes where the data is stored. This is achieved through data partitioning and data placement techniques such as HDFS block placement.[^3]
 
 4. The combiner function is introduced to address the problem of excessive network traffic during the shuffle and sort phase. The combiner function is a mini-reduce function that performs a partial reduction of the intermediate key-value pairs on each map node before they are transferred to the reduce node. This reduces the amount of data transferred over the network and improves the overall performance of the MapReduce job.
 
@@ -560,32 +560,56 @@ cat output/*
 
 ![Output files](images/output-files-2.png)
 
-\newpage
+### Setting up Fully Distributed Mode
 
-Reference examples:
+Skip.
 
-Some text in which I cite an author.[^fn1]
+## Conclusion
 
-More text. Another citation.[^fn2]
+### What have we learned?
 
-What is this? Yet _another_ citation?[^fn3]
+- How to set up Hadoop in a single node mode on our local machine.
+- How MapReduce works.
+- How to actually run a MapReduce job.
+- And even how to implement a MapReduce job.
+
+### How well did we do?
+
+We did pretty well. We have successfully set up Hadoop in a single node mode on our local machine and successfully run a MapReduce job. We have also learned how MapReduce works, and how to implement a MapReduce job.
+
+Of course, nothing is easy the first time. We have encountered many many problems and got stuck for a long time. Even in the easiest step such as installing Java, we installed the wrong version of Java. And that took us a very long time to realize. So we have to reinstall and do everything from the beginning. But we have learned a lot from these problems and successfully completed the task.
+
+### What could we have done better?
+
+We could have done better if we had more time to learn about Hadoop. We could have set up Hadoop in a fully distributed mode, and run a MapReduce job on a cluster of machines.
+
+### Self-evaluation
+
+Here is result that we have done in this lab:
+
+- [100%] Section 1: Set up Hadoop in a single node mode on our local machine.
+- [100%] Section 2: Learn how MapReduce works.
+- [100%] Section 3: Running a warm-up problem: WordCount.
+- [100%] Bonus: Running a real problem: Unhealthy relationship.
+- [0%] Bonus: Setting up Fully Distributed Mode.
 
 ## References
 
 <!-- References without citing, this will be display as resources -->
 
-- Three Cloudera version of WordCount problem:
-  - https://docs.cloudera.com/documentation/other/tutorial/CDH5/topics-/ht_wordcount1.html
-  - https://docs.cloudera.com/documentation/other/tutorial/CDH5/topics/ht_wordcount2.html
-  - https://docs.cloudera.com/documentation/other/tutorial/CDH5/topics/ht_wordcount3.html
-- Book: MapReduce Design Patterns [Donald Miner, Adam Shook, 2012]
+- Hadoop: Setting up a Single Node Cluster.
+  - https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+- MapReduce Tutorial: WordCount Example.
+  - https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
+- A Replication-Based Mechanism for Fault Tolerance in MapReduce Framework.
+  - https://www.hindawi.com/journals/mpe/2015/408921/
 - All of StackOverflow link related.
 
 <!-- References with citing, this will be display as footnotes -->
 
-[^fn1]:
-    So Chris Krycho, "Not Exactly a Millennium," chriskrycho.com, July 2015, http://v4.chriskrycho.com/2015/not-exactly-a-millennium.html
-    (accessed July 25, 2015)
+[^1]: [Hadoop Installation on Windows 10 using WSL
+    ](https://dev.to/samujjwaal/hadoop-installation-on-windows-10-using-wsl-2ck1)
 
-[^fn2]: Contra Krycho, 15, who has everything _quite_ wrong.
-[^fn3]: ibid
+[^2]: [MapReduce Tutorial: Mapper](https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Mapper)
+
+[^3]: [Data locality in Hadoop: The Most Comprehensive Guide](https://data-flair.training/blogs/data-locality-in-hadoop-mapreduce/)
